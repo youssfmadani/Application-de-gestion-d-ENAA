@@ -32,6 +32,6 @@ public class Apprenant extends Personne {
     @Override
     public void afficherDetails() {
         System.out.println("Apprenant: " + nom + " " + prenom + " - Classe: " + (classe != null ? classe.getNom() : "Non assignée"));
-
+    }
 }
 

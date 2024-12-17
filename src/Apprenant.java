@@ -20,14 +20,18 @@ public class Apprenant extends Personne {
     public ArrayList<Double> getNotes() {
         return notes;
     }
+
     public void setNotes(ArrayList<Double> notes) {
         this.notes = notes;
+    }
+
+    public void ajouterNote(Double note) {
+        notes.add(note);
     }
 
     @Override
     public void afficherDetails() {
         System.out.println("Apprenant: " + nom + " " + prenom + " - Classe: " + (classe != null ? classe.getNom() : "Non assignée"));
-    }
 
 }
 

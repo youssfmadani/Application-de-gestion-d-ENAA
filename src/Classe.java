@@ -39,4 +39,5 @@ public class Classe {
     public void setApprenants(ArrayList<Apprenant> apprenants) {
         this.apprenants = apprenants;
     }
+
 }

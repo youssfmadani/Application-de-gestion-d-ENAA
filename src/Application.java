@@ -45,9 +45,10 @@ public class Application {
     private static void gestionApprenants() {
         System.out.println("--- Gestion des Apprenants ---");
         System.out.println("1. Ajouter un apprenant");
-        System.out.println("2. Modifier un apprenant");
-        System.out.println("3. Supprimer un apprenant");
-        System.out.println("4. Afficher les apprenants");
+        System.out.println("2. Associer un apprenant à une classe");
+        System.out.println("3. Modifier un apprenant");
+        System.out.println("4. Supprimer un apprenant");
+        System.out.println("5. Afficher les apprenants");
         System.out.print("Votre choix : ");
         try {
             int choix = scanner.nextInt();
@@ -58,12 +59,15 @@ public class Application {
                     ajouterApprenant();
                     break;
                 case 2:
-                    modifierApprenant();
+                    associerApprenantAClasse();
                     break;
                 case 3:
-                    supprimerApprenant();
+                    modifierApprenant();
                     break;
                 case 4:
+                    supprimerApprenant();
+                    break;
+                case 5:
                     afficherApprenants();
                     break;
                 default:
@@ -96,6 +100,23 @@ public class Application {
             scanner.nextLine();
         }
     }
+    private static void associerApprenantAClasse() {
+        System.out.print("\nEntrez l'ID de l'apprenant à associer : ");
+        int idApprenant = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Entrez le nom de la classe : ");
+        String nomClasse = scanner.nextLine();
+
+        Apprenant apprenant = chercherApprenantParId(idApprenant);
+        Classe classe = chercherClasseParNom(nomClasse);
+
+        if (apprenant != null && classe != null) {
+            classe.ajouterApprenant(apprenant);
+            System.out.println("Apprenant associé à la classe avec succès !");
+        } else {
+            System.out.println("Apprenant ou classe introuvable !");
+        }
+    }
 
     private static void modifierApprenant() {
         System.out.print("Entrez l'ID de l'apprenant à modifier : ");
@@ -107,6 +128,8 @@ public class Application {
                 a.setNom(scanner.nextLine());
                 System.out.print("Nouveau Prénom : ");
                 a.setPrenom(scanner.nextLine());
+                System.out.print("Nouvel Email : ");
+                a.setEmail(scanner.nextLine());
                 System.out.println("Apprenant modifié !");
                 return;
             }
@@ -136,6 +159,24 @@ public class Application {
             }
         }
     }
+    private static Apprenant chercherApprenantParId(int id) {
+        for (Apprenant a : apprenants) {
+            if (a.getId() == id) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    private static Classe chercherClasseParNom(String nom) {
+        for (Classe c : classes) {
+            if (c.getNom().equalsIgnoreCase(nom)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
 
 }
 

@@ -176,6 +176,157 @@ public class Application {
         }
         return null;
     }
+    private static void gestionFormateurs() {
+        System.out.println("\n--- Gestion des Formateurs ---");
+        System.out.println("1. Ajouter un formateur");
+        System.out.println("2. Associer un formateur à une classe");
+        System.out.println("3. Modifier un formateur");
+        System.out.println("4. Supprimer un formateur");
+        System.out.println("5. Afficher les formateurs");
+        System.out.print("Votre choix : ");
+        try {
+            int choix = scanner.nextInt();
+            scanner.nextLine();
+            switch (choix) {
+                case 1:
+                    ajouterFormateur();
+                    break;
+                case 2:
+                    associerFormateurAClasse();
+                    break;
+                case 3:
+                    modifierFormateur();
+                    break;
+                case 4:
+                    supprimerFormateur();
+                    break;
+                case 5:
+                    afficherFormateurs();
+                    break;
+                default:
+                    System.out.println("Choix invalide !");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Erreur : Veuillez entrer un nombre valide !");
+            scanner.nextLine();
+        }
+    }
+
+    private static void ajouterFormateur() {
+        System.out.println("\nAjout d'un nouveau formateur");
+        try {
+            System.out.print("ID : ");
+            int id = scanner.nextInt();
+            scanner.nextLine();
+            System.out.print("Nom : ");
+            String nom = scanner.nextLine();
+            System.out.print("Prénom : ");
+            String prenom = scanner.nextLine();
+            System.out.print("Spécialité : ");
+            String specialite = scanner.nextLine();
+            System.out.print("Email : ");
+            String email = scanner.nextLine();
+            System.out.print("Salaire : ");
+            double salaire = scanner.nextDouble();
+
+            Formateur formateur = new Formateur(id, nom, prenom, specialite, email, salaire);
+            formateurs.add(formateur);
+            System.out.println("Formateur ajouté avec succès !");
+        } catch (InputMismatchException e) {
+            System.out.println("Erreur : ID ou Salaire invalide !");
+            scanner.nextLine();
+        }
+    }
+
+    private static void associerFormateurAClasse() {
+        System.out.print("\nEntrez l'ID du formateur : ");
+        int idFormateur = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Entrez le nom de la classe : ");
+        String nomClasse = scanner.nextLine();
+
+        Formateur formateur = chercherFormateurParId(idFormateur);
+        Classe classe = chercherClasseParNom(nomClasse);
+
+        if (formateur != null && classe != null) {
+            classe.setFormateur(formateur);
+            System.out.println("Formateur associé à la classe avec succès !");
+        } else {
+            System.out.println("Formateur ou classe introuvable !");
+        }
+    }
+
+    private static void modifierFormateur() {
+        System.out.print("\nEntrez l'ID du formateur à modifier : ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        Formateur formateur = chercherFormateurParId(id);
+        if (formateur != null) {
+            System.out.print("Nouveau Nom : ");
+            formateur.setNom(scanner.nextLine());
+            System.out.print("Nouveau Prénom : ");
+            formateur.setPrenom(scanner.nextLine());
+            System.out.print("Nouvelle Spécialité : ");
+            formateur.setSpecialite(scanner.nextLine());
+            System.out.print("Nouvel Email : ");
+            formateur.setEmail(scanner.nextLine());
+            System.out.print("Nouveau Salaire : ");
+            formateur.setSalaire(scanner.nextDouble());
+            System.out.println("Formateur modifié !");
+        } else {
+            System.out.println("Formateur introuvable !");
+        }
+    }
+
+    private static void supprimerFormateur() {
+        System.out.print("\nEntrez l'ID du formateur à supprimer : ");
+        int id = scanner.nextInt();
+        if (formateurs.removeIf(f -> f.getId() == id)) {
+            System.out.println("Formateur supprimé avec succès !");
+        } else {
+            System.out.println("Formateur introuvable !");
+        }
+    }
+
+    private static void afficherFormateurs() {
+        System.out.println("\n1. Afficher un formateur spécifique");
+        System.out.println("2. Afficher tous les formateurs");
+        System.out.print("Votre choix : ");
+        int choix = scanner.nextInt();
+        scanner.nextLine();
+
+        if (choix == 1) {
+            System.out.print("Entrez l'ID du formateur : ");
+            int id = scanner.nextInt();
+            scanner.nextLine();
+            Formateur formateur = chercherFormateurParId(id);
+            if (formateur != null) {
+                formateur.afficherDetails();
+            } else {
+                System.out.println("Formateur introuvable !");
+            }
+        } else if (choix == 2) {
+            if (formateurs.isEmpty()) {
+                System.out.println("Aucun formateur n'est enregistré.");
+            } else {
+                for (Formateur f : formateurs) {
+                    f.afficherDetails();
+                }
+            }
+        } else {
+            System.out.println("Choix invalide !");
+        }
+    }
+
+    private static Formateur chercherFormateurParId(int id) {
+        for (Formateur f : formateurs) {
+            if (f.getId() == id) {
+                return f;
+            }
+        }
+        return null;
+    }
+
 
 
 }

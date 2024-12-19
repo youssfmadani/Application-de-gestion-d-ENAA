@@ -4,7 +4,7 @@ public class Classe {
     private Formateur formateur;
     private ArrayList<Apprenant> apprenants = new ArrayList<>();
 
-    public Classe(String nom, Formateur formateur) {
+    public Classe(String nom) {
         this.nom = nom;
         this.formateur = formateur;
     }
@@ -41,4 +41,15 @@ public class Classe {
     }
 
 
+    public boolean supprimerApprenant(int idASupprimer) {
+
+        for (Apprenant a : apprenants) {
+            if (a.getId()==idASupprimer) {
+                return apprenants.remove(a);
+
+            }
+
+        }
+        return false;
+    }
 }

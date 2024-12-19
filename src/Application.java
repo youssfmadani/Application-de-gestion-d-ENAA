@@ -24,10 +24,10 @@ public class Application {
                             gestionApprenants();
                             break;
                         case 2:
-                            //gestionFormateurs();
+                            gestionFormateurs();
                             break;
                         case 3:
-                            //gestionClasses();
+                            gestionClasses();
                             break;
                         case 4:
                             System.out.println("Merci et à bientôt !");
@@ -325,6 +325,126 @@ public class Application {
             }
         }
         return null;
+    }
+    // ===================== GESTION DES CLASSES ===================== //
+    private static void gestionClasses() {
+        System.out.println("\n--- Gestion des Classes ---");
+        System.out.println("1. Créer une classe");
+        System.out.println("2. Modifier une classe");
+        System.out.println("3. Supprimer une classe");
+        System.out.println("4. Afficher les détails d'une classe");
+        System.out.print("Votre choix : ");
+        try {
+            int choix = scanner.nextInt();
+            scanner.nextLine();
+            switch (choix) {
+                case 1:
+                    creerClasse();
+                    break;
+                case 2:
+                    modifierClasse();
+                    break;
+                case 3:
+                    supprimerClasse();
+                    break;
+                case 4:
+                    afficherDetailsClasse();
+                    break;
+                default:
+                    System.out.println("Choix invalide !");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Erreur : Veuillez entrer un nombre valide !");
+            scanner.nextLine();
+        }
+    }
+
+    private static void creerClasse() {
+        System.out.println("\nCréation d'une nouvelle classe");
+        System.out.print("Nom : ");
+        String nom = scanner.nextLine();
+        Classe classe = new Classe(nom);
+        classes.add(classe);
+        System.out.println("Classe créée avec succès !");
+    }
+
+    private static void modifierClasse() {
+        System.out.print("\nEntrez le nom de la classe à modifier : ");
+        String nom = scanner.nextLine();
+        Classe classe = chercherClasseParNom(nom);
+        if (classe != null) {
+            System.out.println("\n1. Changer le formateur principal");
+            System.out.println("2. Ajouter un apprenant");
+            System.out.println("3. Supprimer un apprenant");
+            System.out.print("Votre choix : ");
+            int choix = scanner.nextInt();
+            scanner.nextLine();
+            switch (choix) {
+                case 1:
+                    System.out.print("Entrez l'ID du nouveau formateur : ");
+                    int idFormateur = scanner.nextInt();
+                    scanner.nextLine();
+                    Formateur formateur = chercherFormateurParId(idFormateur);
+                    if (formateur != null) {
+                        classe.setFormateur(formateur);
+                        System.out.println("Formateur principal modifié !");
+                    } else {
+                        System.out.println("Formateur introuvable !");
+                    }
+                    break;
+                case 2:
+                    System.out.print("Entrez l'ID de l'apprenant à ajouter : ");
+                    int idApprenant = scanner.nextInt();
+                    scanner.nextLine();
+                    Apprenant apprenant = chercherApprenantParId(idApprenant);
+                    if (apprenant != null) {
+                        classe.ajouterApprenant(apprenant);
+                        System.out.println("Apprenant ajouté !");
+                    } else {
+                        System.out.println("Apprenant introuvable !");
+                    }
+                    break;
+                case 3:
+                    System.out.print("Entrez l'ID de l'apprenant à supprimer : ");
+                    int idASupprimer = scanner.nextInt();
+                    scanner.nextLine();
+                    if (classe.supprimerApprenant(idASupprimer)) {
+                        System.out.println("Apprenant supprimé !");
+                    } else {
+                        System.out.println("Apprenant introuvable dans cette classe !");
+                    }
+                    break;
+                default:
+                    System.out.println("Choix invalide !");
+            }
+        } else {
+            System.out.println("Classe introuvable !");
+        }
+    }
+
+    private static void supprimerClasse() {
+        System.out.print("\nEntrez le nom de la classe à supprimer : ");
+        String nom = scanner.nextLine();
+        for (Classe classe : classes) {
+            if (classe.getNom().equals(nom)) {
+                classes.remove(classe);
+                System.out.println("Classe supprimée avec succès !");
+            } else {
+                System.out.println("Classe introuvable !");
+                break;
+            }
+        }
+    }
+
+    private static void afficherDetailsClasse() {
+        System.out.print("\nEntrez le nom de la classe : ");
+        String nom = scanner.nextLine();
+        Classe classe = chercherClasseParNom(nom);
+        if (classe != null) {
+            classe.afficherDetails();
+        } else {
+            System.out.println("Classe introuvable !");
+        }
     }
 
 
